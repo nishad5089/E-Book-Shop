@@ -33,3 +33,10 @@
   position: absolute;
   width: 260px;
 }
+.sidebar .logo-mini,
+.off-canvas-sidebar .logo-mini {
+  display: none;
+}
+.sidebar-wrapper{
+  overflow: hidden;
+}

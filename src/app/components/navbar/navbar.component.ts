@@ -1,7 +1,8 @@
 import { Component, OnInit, ElementRef, EventEmitter, Output } from '@angular/core';
-import { ROUTES } from '../sidebar/sidebar.component';
+
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
+import { ROUTES } from '../sidebar/sidebar-routes.config';
 
 @Component({
   selector: 'app-navbar',
@@ -22,13 +23,13 @@ export class NavbarComponent implements OnInit {
           this.desktopSidebarMode = true;
     }
 
-    ngOnInit(){
+    ngOnInit() {
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
       this.router.events.subscribe((event) => {
         this.sidebarClose();
-         var $layer: any = document.getElementsByClassName('close-layer')[0];
+         const $layer: any = document.getElementsByClassName('close-layer')[0];
          if ($layer) {
            $layer.remove();
            this.mobile_menu_visible = 0;
@@ -41,14 +42,11 @@ export class NavbarComponent implements OnInit {
         }
         return false;
     };
-    toggleDesktopSidebar() {
-        this.desktopSidebarMode = !this.desktopSidebarMode;
-        this.displaySidebar.emit(this.desktopSidebarMode);
-   }
+
     sidebarOpen() {
         const toggleButton = this.toggleButton;
         const body = document.getElementsByTagName('body')[0];
-        setTimeout(function(){
+        setTimeout(function() {
             toggleButton.classList.add('toggled');
         }, 500);
 
@@ -65,7 +63,7 @@ export class NavbarComponent implements OnInit {
     sidebarToggle() {
         // const toggleButton = this.toggleButton;
         // const body = document.getElementsByTagName('body')[0];
-        var $toggle = document.getElementsByClassName('navbar-toggler')[0];
+        const $toggle = document.getElementsByClassName('navbar-toggler')[0];
 
         if (this.sidebarVisible === false) {
             this.sidebarOpen();
@@ -74,10 +72,12 @@ export class NavbarComponent implements OnInit {
         }
         const body = document.getElementsByTagName('body')[0];
 
-        if (this.mobile_menu_visible == 1) {
+        if (this.mobile_menu_visible === 1) {
             // $('html').removeClass('nav-open');
             body.classList.remove('nav-open');
+            // tslint:disable-next-line: no-use-before-declare
             if ($layer) {
+                // tslint:disable-next-line: no-use-before-declare
                 $layer.remove();
             }
             setTimeout(function() {
@@ -89,14 +89,13 @@ export class NavbarComponent implements OnInit {
             setTimeout(function() {
                 $toggle.classList.add('toggled');
             }, 430);
-
+            // tslint:disable-next-line: no-var-keyword  tslint:disable-next-line: prefer-const
             var $layer = document.createElement('div');
             $layer.setAttribute('class', 'close-layer');
 
-
             if (body.querySelectorAll('.main-panel')) {
                 document.getElementsByClassName('main-panel')[0].appendChild($layer);
-            }else if (body.classList.contains('off-canvas-sidebar')) {
+            } else if (body.classList.contains('off-canvas-sidebar')) {
                 document.getElementsByClassName('wrapper-full-page')[0].appendChild($layer);
             }
 
@@ -104,7 +103,7 @@ export class NavbarComponent implements OnInit {
                 $layer.classList.add('visible');
             }, 100);
 
-            $layer.onclick = function() { //asign a function
+            $layer.onclick = function() { // asign a function
               body.classList.remove('nav-open');
               this.mobile_menu_visible = 0;
               $layer.classList.remove('visible');
@@ -119,15 +118,40 @@ export class NavbarComponent implements OnInit {
 
         }
     };
-
-    getTitle(){
-      var titlee = this.location.prepareExternalUrl(this.location.path());
-      if(titlee.charAt(0) === '#'){
+    deskSidebarOpen() {
+        // setTimeout(() => {
+        //     $('.sidebar').css('left', '0%');
+        // }, 300)
+        const body = document.getElementsByTagName('body')[0];
+        body.classList.remove('sidebar-mini');
+        $('.text').show();
+        body.classList.add('sidebar-normal');
+        this.desktopSidebarMode = true;
+    }
+    deskSidebarClose() {
+      //  $('.sidebar').css('left', '-32%');
+        const body = document.getElementsByTagName('body')[0];
+        body.classList.add('sidebar-mini');
+        $('.sidebar .collapse').css('height', 'auto');
+        $('.text').hide();
+        //  $('.main-panel').css('width', '95%');
+        this.desktopSidebarMode = false;
+    }
+    toggleDesktopSidebar() {
+        if (this.desktopSidebarMode === false) {
+            this.deskSidebarOpen();
+        } else {
+            this.deskSidebarClose();
+        }
+    }
+    getTitle() {
+      let titlee = this.location.prepareExternalUrl(this.location.path());
+      if (titlee.charAt(0) === '#') {
           titlee = titlee.slice( 1 );
       }
 
-      for(var item = 0; item < this.listTitles.length; item++){
-          if(this.listTitles[item].path === titlee){
+      for (let item = 0; item < this.listTitles.length; item++) {
+          if (this.listTitles[item].path === titlee) {
               return this.listTitles[item].title;
           }
       }

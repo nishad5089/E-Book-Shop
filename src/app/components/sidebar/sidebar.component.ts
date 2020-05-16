@@ -1,37 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-
-declare const $: any;
-declare interface RouteInfo {
-    path: string;
-    title: string;
-    icon: string;
-    class: string;
-}
-export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
-    { path: '/user-profile', title: 'User Profile',  icon: 'person', class: '' },
-    { path: '/table-list', title: 'Table List',  icon: 'content_paste', class: '' },
-    { path: '/typography', title: 'Typography',  icon: 'library_books', class: '' },
-    { path: '/icons', title: 'Icons',  icon: 'bubble_chart', class: '' },
-    { path: '/maps', title: 'Maps',  icon: 'location_on', class: '' },
-    { path: '/notifications', title: 'Notifications',  icon: 'notifications', class: '' },
-    // { path: '/upgrade', title: 'Upgrade to PRO',  icon: 'unarchive', class: 'active-pro' },
-];
+import {AfterViewInit, Component, OnInit, OnDestroy} from '@angular/core';
+import { ROUTES } from './sidebar-routes.config';
+import { SettingsService } from 'app/services/settings.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
-  menuItems: any[];
-
-  constructor() { }
+export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
+  public color: string;
+  public menuItems: object;
+  public activeFontColor: string;
+  public normalFontColor: string;
+  public dividerBgColor: string;
+  constructor(public settingsService: SettingsService) {
+    this.menuItems = ROUTES;
+    this.activeFontColor = 'rgba(0,0,0,1)';
+    this.normalFontColor = 'rgba(255,255,255,1)';
+    this.dividerBgColor = 'rgba(255, 255, 255, 1)';
+  }
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.color = this.settingsService.getSidebarFilter();
+    this.settingsService.sidebarFilterUpdate.subscribe((filter: string) => {
+      this.color = filter;
+      if (filter === '#fff') {
+        this.activeFontColor = 'rgba(0,0,0,1)';
+      } else {
+        this.activeFontColor = 'rgba(255,255,255,1)';
+      }
+    });
+    this.settingsService.sidebarColorUpdate.subscribe((color: string) => {
+      if (color === '#fff') {
+        this.normalFontColor = 'rgba(0,0,0,1)';
+        this.dividerBgColor = 'rgba(0,0,0,1)';
+      } else {
+        this.normalFontColor = 'rgba(255,255,255,1)';
+        this.dividerBgColor = 'rgba(255, 255, 255, 1)';
+      }
+    });
   }
-  isMobileMenu() {
+  ngOnDestroy() {
+    this.settingsService.sidebarFilterUpdate.unsubscribe();
+    this.settingsService.sidebarColorUpdate.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+  }
+isMobileMenu() {
       if ($(window).width() > 991) {
           return false;
       }

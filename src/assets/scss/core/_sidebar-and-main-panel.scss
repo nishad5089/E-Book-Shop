@@ -160,7 +160,7 @@
 
             &.active > a,
             &.active > a i{
-                color: $white-color;
+                color: #333;
             }
 
             &.separator{
@@ -426,6 +426,22 @@
     display: none !important;
 }
 
+
+  .sidebar-mini .sidebar .logo {
+    display: none;
+  }
+  .sidebar-mini .sidebar .logo-mini {
+    padding: 10px 0px;
+    display: block;
+    margin: 0px;
+    position: relative;
+    z-index: 4;
+  }
+  .sidebar[data-background-color="black"] .nav li > a,
+.off-canvas-sidebar[data-background-color="black"] .nav li > a {
+  color: #FFFFFF;
+}
+
 @media (min-width: 991px) {
     .sidebar-mini{
         .visible-on-sidebar-regular{
@@ -434,7 +450,10 @@
         .visible-on-sidebar-mini{
             display: inline-block !important;
         }
-
+        .ps--active-x > .ps__rail-x {
+            display: none;
+            /* background-color: transparent; */
+        }
         .sidebar,
         .sidebar .sidebar-wrapper{
             width: 80px;
@@ -468,7 +487,7 @@
         }
 
         .sidebar:hover{
-            width: 260px;
+            // width: 260px;
 
             .logo{
                 a.logo-normal{
@@ -477,17 +496,17 @@
                 }
             }
 
-            .sidebar-wrapper{
-                width: 260px;
+            // .sidebar-wrapper{
+            //     // width: 260px;
 
-                > .nav li > a p,
-                > .nav [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,
-                .user .user-info [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,
-                .user .user-info > a > span{
-                    @include transform-translate-x(0px);
-                    opacity: 1;
-                }
-            }
+            //     > .nav li > a p,
+            //     > .nav [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,
+            //     .user .user-info [data-toggle="collapse"] ~ div > ul > li > a .sidebar-normal,
+            //     .user .user-info > a > span{
+            //         @include transform-translate-x(0px);
+            //         opacity: 1;
+            //     }
+            // }
         }
     }
 
@@ -501,3 +520,7 @@
       }
     }
 }
+
+
+//strt
+

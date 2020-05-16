@@ -1,10 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
     <div class="container-fluid">
-        <div *ngIf="isDesktopMenu()" (click)="toggleDesktopSidebar()" class="navbar-wrapper">
-            <a class="nav-link" href="javascript:void(0)" >
-                <i  class="material-icons">menu</i>    
-            </a>
-          </div>
+        
+          <div class="navbar-minimize">
+            <button id="minimizeSidebar" (click)="toggleDesktopSidebar()" class="btn btn-round btn-white btn-fill btn-just-icon">
+                <i class="material-icons visible-on-sidebar-regular">more_vert</i>
+                <i class="material-icons visible-on-sidebar-mini">view_list</i>
+            </button>
+        </div>
         <div class="navbar-wrapper">
           <a class="navbar-brand" href="javascript:void(0)">{{getTitle()}}</a>
         </div>

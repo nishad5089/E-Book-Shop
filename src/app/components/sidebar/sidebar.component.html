@@ -1,13 +1,24 @@
-<div class="logo">
+<!-- <div class="logo">
     <a href="https://www.creative-tim.com" class="simple-text">
         <div class="logo-img">
             <img src="/assets/img/angular2-logo-red.png"/>
         </div>
-        Shopping
+        <span class="text">Shopping</span>    
     </a>
-</div>
+</div> -->
+   <div class="logo">
+                <a href="http://www.creative-tim.com/" class="simple-text">
+                    Creative Tim
+                </a>
+            </div>
+            <div class="logo logo-mini">
+                <a href="http://www.creative-tim.com/" class="simple-text">
+                    Ct
+                </a>
+            </div>
+
 <div class="sidebar-wrapper">
-  <div *ngIf="isMobileMenu()">
+    <div *ngIf="isMobileMenu()">
     <form class="navbar-form">
       <span class="bmd-form-group">
         <div class="input-group no-border">
@@ -54,12 +65,30 @@
         </li>
     </ul>
   </div>
-    <ul class="nav">
-        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-            <a class="nav-link" [routerLink]="[menuItem.path]">
-                <i class="material-icons">{{menuItem.icon}}</i>
-                <p>{{menuItem.title}}</p>
+      <ul class="nav">
+        <li *ngFor="let menuItem of menuItems" routerLinkActive #rla="routerLinkActive" [ngClass]="rla.isActive? (menuItem.children === null? 'active' : '') : ''" [routerLinkActiveOptions]="{exact: true}" nav-item>
+          <a class="nav-link" [style.display]="menuItem.children === null? 'flex' : 'none'" [routerLink]="[menuItem.path]" [style.background-color]="rla.isActive? color : 'transparent'" [style.color]="rla.isActive? activeFontColor : normalFontColor">
+            <i class="material-icons">{{menuItem.icon}}</i>
+            <p>{{menuItem.title}}</p>
+          </a>
+
+            <a *ngIf="menuItem.children !== null" data-toggle="collapse" [href]="[menuItem.path]"  style="padding: 0 15px;" [ngClass]="rla.isActive? 'parent-active' : ''" class="collapse-a collapsed" [style.color]="normalFontColor">
+              <i class="material-icons">{{menuItem.icon}}</i>
+              <p>{{menuItem.title}}
+              <b class="caret"></b></p>
             </a>
+            <div class="collapse" [id]="[menuItem.id]">
+              <ul class="nav">
+                <li *ngFor="let subItem of menuItem.children" routerLinkActive #subrla="routerLinkActive" [ngClass]="subrla.isActive? 'active' : ''">
+                  <a [routerLink]="[subItem.path]" [style.background-color]="subrla.isActive? color : 'transparent'" [style.color]="subrla.isActive? activeFontColor : normalFontColor">
+                    <i style="margin-left: 5px;" class="material-icons">{{subItem.icon}}</i>
+                    <p>{{subItem.title}}</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+      
         </li>
-    </ul>
-</div>
+      </ul>
+    </div>
+  
