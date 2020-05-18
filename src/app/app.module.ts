@@ -14,8 +14,10 @@ import {
   AgmCoreModule
 } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { BookComponent } from './book/book.component';
 import { SettingsService } from './services/settings.service';
+import { BookService } from './services/book.service';
+import { ErrorInterceptorProvider } from './services/error.interceptor';
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -32,10 +34,12 @@ import { SettingsService } from './services/settings.service';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    BookComponent,
-
   ],
-  providers: [SettingsService],
+  providers: [
+    SettingsService,
+    BookService,
+    ErrorInterceptorProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
