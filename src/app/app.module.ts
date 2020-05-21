@@ -17,6 +17,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { SettingsService } from './services/settings.service';
 import { BookService } from './services/book.service';
 import { ErrorInterceptorProvider } from './services/error.interceptor';
+import { CategoryService } from './services/category.service';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import { ErrorInterceptorProvider } from './services/error.interceptor';
   providers: [
     SettingsService,
     BookService,
+    CategoryService,
     ErrorInterceptorProvider
   ],
   bootstrap: [AppComponent]

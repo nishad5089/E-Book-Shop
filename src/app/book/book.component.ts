@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Book } from 'app/_models/book';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { BookService } from 'app/services/book.service';
+import { CategoryService } from 'app/services/category.service';
+import { Category } from 'app/_models/category';
 declare var $: any;
 @Component({
   selector: 'app-book',
@@ -13,24 +15,44 @@ export class BookComponent implements OnInit {
  fileToUpload: File = null;
  isImageChnaged: Boolean;
  book: Book;
-
+ isChecked: Boolean = false;
+ categories: Category[];
+ selectedCategories = [];
  @ViewChild('formDirective') myNgForm;
- createForm = new FormGroup({
-  title: new FormControl('', [Validators.required, Validators.minLength(4)]),
-  author: new FormControl('', [Validators.required]),
-  isbn: new FormControl('', [Validators.required]),
-  price: new FormControl('', [Validators.required]),
-});
+ @ViewChild('Image') fileInputVariable: ElementRef;
  msg: string;
-  constructor(private bookService: BookService) {
+   createForm: FormGroup;
+  constructor(private bookService: BookService, private fb: FormBuilder, private categoryService: CategoryService) {
     this.imageUrl =  '../../assets/img/Default_image.jpg';
-    this.isImageChnaged = false;
+    this.createForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(4)]],
+      author: ['', Validators.required],
+      isbn: ['', Validators.required],
+      price: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.min(0)]],
+      categoryCheckbox: [false, [Validators.required]],
+    });
    }
-
-  ngOnInit(): void {
-
-    this.getBook();
+   ngOnInit(): void {
+    this.categoryService.getCategories().subscribe(res => {
+      this.categories = res as Category[];
+    })
   }
+   get title() {
+    return this.createForm.get('title');
+  }
+
+  get author() {
+    return this.createForm.get('author');
+  }
+
+  get category() {
+    return this.createForm.get('isbn');
+  }
+
+  get price() {
+    return this.createForm.get('price');
+  }
+
   handleFileInput(files: FileList) {
     console.log('change called');
     if (files && files.length) {
@@ -43,17 +65,12 @@ export class BookComponent implements OnInit {
      reader.readAsDataURL(this.fileToUpload);
     }
   }
-  showNotification(from, align) {
-    const type = ['', 'success'];
-
-    const color = Math.floor((Math.random() * 4) + 1);
-
+  showNotification(from, align, type, msg) {
     $.notify({
         icon: 'notifications',
-        message: 'Successfully Booke Added'
-
+        message: msg
     }, {
-        type: type[color],
+        type: type,
         timer: 200,
         placement: {
             from: from,
@@ -75,21 +92,39 @@ export class BookComponent implements OnInit {
     if (this.createForm.valid) {
       this.book = Object.assign({}, this.createForm.value);
       console.log(this.book);
-
-    this.bookService.saveBook(this.book, this.fileToUpload).subscribe(res => {
+if (this.isImageChnaged) {
+    this.bookService.saveBook(this.book, this.fileToUpload, this.selectedCategories).subscribe(res => {
       this.myNgForm.resetForm();
-      this.showNotification('top', 'right');
+      this.showNotification('top', 'right', 'success', 'Book Successfully Added');
+      this.fileInputVariable.nativeElement.value = '';
       this.imageUrl =  '../../assets/img/Default_image.jpg';
       this.isImageChnaged = false;
     }, error => {
       console.log(error)
     })
-    }
-  }
+} else {
+  this.showNotification('top', 'right', 'danger', 'Image Not Added');
+}
+}
+}
   getBook() {
     this.bookService.get().subscribe((res: string) => {
       this.msg = res;
       console.log(this.msg)
     })
+  }
+  onChange(event, itemId) {
+    console.log('onChange event.checked : ' + event.checked + ' item Id: ' + itemId);
+    if (event.checked) {
+      this.selectedCategories.push(itemId);
+    } else {
+      const index: number = this.selectedCategories.indexOf(itemId);
+      if (index !== -1) {
+          this.selectedCategories.splice(index, 1);
+      }
+    }
+    // for (const category of this.selectedCategories) {
+    //   console.log(category); // prints values: 10, 20, 30, 40
+    // }
   }
 }

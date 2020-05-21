@@ -10,12 +10,16 @@
             <h4 class="card-title">Add Book -
               <small class="category">Add you book here</small>
             </h4>
-            <form (ngSubmit)="createBook()" [formGroup]="createForm" #formDirective="ngForm" >
-                <div class="row">
+            <form  [formGroup]="createForm" #formDirective="ngForm" (ngSubmit)="createBook()"> 
+              <div class="row">
                     <div class="col-md-12">
                         <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Title" type="text" formControlName="title">
+                          <input matInput placeholder="Title" type="text" formControlName="title" >
+                          <!-- <mat-error *ngIf="title.touched && title.invalid">Title name is
+                            required</mat-error> -->
                         </mat-form-field>
+                        <span *ngIf="title.touched && title.valid || title.dirty && title.valid" class="material-icons valid-icon">done</span>
+                        <span *ngIf="title.touched && title.invalid || title.dirty && title.invalid" class="material-icons invalid-icon">clear</span>
                     </div>
                 </div>
                 <div class="row">
@@ -37,23 +41,19 @@
                       </mat-form-field>
                     </div>
                 </div>
-              
-                <!-- <div class="row">
-                    <div class="col-md-6 col-sm-4">
-                        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                            <div class="fileinput-new thumbnail">
-                                <img [src]="imageUrl"  alt="...">
-                            </div>
-                            <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                            <div>
-                                <span class="btn btn-rose btn-round btn-file">
-                                  <span class="fileinput-new">Select image</span>
-                                  <input type="file"  (change)="handleFileInput($event.target.files)" name="..." accept="image/*" />
-                                </span>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col-md-12">
+                      <h3>Select Category</h3>
+                      <section  *ngFor="let item of categories">
+                        <mat-checkbox  [checked]="isChecked" (change)="onChange($event,item.id); false" required formControlName="categoryCheckbox">
+                          <span class="font" >{{item.categoryName}}</span>  
+                        </mat-checkbox>
+                      </section>
+                       
                     </div>
-                </div> -->
+                </div>
+              
+           
                 <div class="row action-btn">
                     <button md-raised-button [disabled]="!isImageChnaged || !createForm.valid" class="btn btn-rose">ADD BOOK</button>
                   </div>
@@ -64,31 +64,18 @@
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card right-profile">
-          <div class="profile">
-            <img [src]="imageUrl" alt="profile"/>
-          </div>
-          <div style="margin-top: 20px;">
-            <span class="btn btn-rose btn-round btn-file">
-              <span class="fileinput-new">Select image</span>
-              <input type="file" (change)="handleFileInput($event.target.files)" name="..." accept="image/*" />
-            </span>
-        </div>   
-      </div>
-          <!-- <button mat-raised-button class="btn btn-rose btn-round">CHANGE</button> -->
-     
-        <!-- <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+      
+        <div class="fileinput fileinput-new text-center" data-provides="fileinput">
           <div class="fileinput-new thumbnail">
-              <img [src]="imageUrl"  alt="...">
+              <img [(src)]="imageUrl"  alt="...">
           </div>
-          <div class="fileinput-preview fileinput-exists thumbnail"></div>
-          <div>
+          <div class="uploadfileposition">
               <span class="btn btn-rose btn-round btn-file">
                 <span class="fileinput-new">Select image</span>
-                <input type="file" formControlName="url" (change)="handleFileInput($event.target.files)" name="..." accept="image/*" />
+                <input type="file" #Image (change)="handleFileInput($event.target.files)" name="..." accept="image/*" required/>
               </span>
           </div>
-      </div> -->
+      </div>
       </div>
     </div>
   </div>

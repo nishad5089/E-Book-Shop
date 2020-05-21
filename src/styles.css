@@ -1,0 +1,15 @@
+.mat-checkbox-checkmark-path { 
+    stroke: #9c27b0 !important;
+  }
+  
+ .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: transparent;
+  }
+  
+  .mat-checkbox-frame {
+    border-width: 1px !important;
+  }
+  
+  .mat-checkbox-anim-unchecked-checked .mat-checkbox-checkmark-path {
+    animation: 300ms linear 0s mat-checkbox-unchecked-checked-checkmark-path !important;
+  }
