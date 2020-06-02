@@ -27,7 +27,7 @@ export class BookService {
     formData.append('file', fileToUpload, fileToUpload.name);
     return this.http.post(this.baseUrl, formData, { params: params });
   }
-  get() {
-    return this.http.get(this.baseUrl, {responseType: 'text'});
+  getBooks() {
+    return this.http.get(this.baseUrl);
   }
 }

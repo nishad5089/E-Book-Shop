@@ -107,12 +107,12 @@ if (this.isImageChnaged) {
 }
 }
 }
-  getBook() {
-    this.bookService.get().subscribe((res: string) => {
-      this.msg = res;
-      console.log(this.msg)
-    })
-  }
+  // getBook() {
+  //   this.bookService.get().subscribe((res: string) => {
+  //     this.msg = res;
+  //     console.log(this.msg)
+  //   })
+  // }
   onChange(event, itemId) {
     console.log('onChange event.checked : ' + event.checked + ' item Id: ' + itemId);
     if (event.checked) {

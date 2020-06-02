@@ -18,6 +18,7 @@ import { SettingsService } from './services/settings.service';
 import { BookService } from './services/book.service';
 import { ErrorInterceptorProvider } from './services/error.interceptor';
 import { CategoryService } from './services/category.service';
+import { BooklistComponent } from './booklist/booklist.component';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { CategoryService } from './services/category.service';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
+    BooklistComponent,
   ],
   providers: [
     SettingsService,

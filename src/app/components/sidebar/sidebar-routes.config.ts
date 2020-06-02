@@ -2,6 +2,7 @@ export const ROUTES = [
   { path: '/dashboard', title: 'Dashboard', class: '', icon: 'dashboard', children: null  },
   { path: '/user-profile', title: 'User Profile', class: '', icon: 'person', children: null  },
   { path: '/book', title: 'Book', class: '', icon: 'book', children: null  },
+  { path: '/booklist', title: 'Book List', class: '', icon: 'book', children: null  },
 
     { path: '#component', id: 'component', title: 'Component', class: '', icon: 'apps', children: [
       { path: '/notifications', title: 'Notifications', class: '', icon: 'notifications',  children: null  },
